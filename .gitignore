@@ -1,0 +1,12 @@
+node_modules
+android/.gradle/
+ios/Pods/
+yarn.lock
+build
+local.properties
+.idea
+xcuserdata
+.vscode
+android/app/src/main/assets
+ios/Assets
+KeyCenter.js
