@@ -1,4 +1,4 @@
-import ZegoEffects, { ZegoEffectsBlusherType, ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType, ZegoEffectsScaleMode } from 'zego-effects-reactnative'
+import ZegoEffects, { ZegoEffectsBlusherType, ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType, ZegoEffectsScaleMode } from '@zegocloud/zego-effects-reactnative'
 import KeyCenter from '../KeyCenter';
 import { BeautyItem, BeautyType } from './EffectsConfig';
 import RNFS from 'react-native-fs';

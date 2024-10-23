@@ -436,9 +436,10 @@ PODS:
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
-  - zego-effects-reactnative (1.0.12):
+  - zego-effects-reactnative (1.0.22):
     - React
     - ZegoEffects
+    - ZegoExpressPrivate
   - ZegoEffects (1.4.13)
   - ZegoExpressPrivate (3.16.2.40464):
     - ZegoExpressPrivate/Default (= 3.16.2.40464)
@@ -511,7 +512,7 @@ DEPENDENCIES:
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
-  - zego-effects-reactnative (from `../node_modules/zego-effects-reactnative`)
+  - "zego-effects-reactnative (from `../node_modules/@zegocloud/zego-effects-reactnative`)"
 
 SPEC REPOS:
   trunk:
@@ -617,7 +618,7 @@ EXTERNAL SOURCES:
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
   zego-effects-reactnative:
-    :path: "../node_modules/zego-effects-reactnative"
+    :path: "../node_modules/@zegocloud/zego-effects-reactnative"
 
 SPEC CHECKSUMS:
   boost: 7dcd2de282d72e344012f7d6564d024930a6a440
@@ -676,7 +677,7 @@ SPEC CHECKSUMS:
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   Yoga: d4f5b037672e6b68ba484c7cf7fe6790122df792
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
-  zego-effects-reactnative: f6bf753ab08550231b8d909f12fdbe4517d2d87b
+  zego-effects-reactnative: 6bace6ab44e42d67f2ce79d9421d37acc8554e0f
   ZegoEffects: db39de1863dd522b62eb9927b04c8dd770b881a7
   ZegoExpressPrivate: 6c6a9f8ed287b03156bf6910d4851f71eab1eee5
 

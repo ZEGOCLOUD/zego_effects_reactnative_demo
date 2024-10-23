@@ -47,7 +47,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		4EE3BCAB2CA421A500E4D063 /* Assets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Assets; sourceTree = "<group>"; };
+		4E07D49D2CC8DCAC006143CA /* Assets */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Assets; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,7 +90,7 @@
 		13B07FAE1A68108700A75B9A /* example */ = {
 			isa = PBXGroup;
 			children = (
-				4EE3BCAB2CA421A500E4D063 /* Assets */,
+				4E07D49D2CC8DCAC006143CA /* Assets */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -195,7 +195,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				4EE3BCAB2CA421A500E4D063 /* Assets */,
+				4E07D49D2CC8DCAC006143CA /* Assets */,
 			);
 			name = example;
 			productName = example;

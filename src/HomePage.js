@@ -29,7 +29,7 @@ import ZegoExpressEngine, { ZegoPublishChannel, ZegoScenario } from 'zego-expres
 import KeyCenter from '../KeyCenter';
 import MinimizingHelper from './minimizing_helper';
 
-import ZegoEffects from 'zego-effects-reactnative'
+import ZegoEffects from '@zegocloud/zego-effects-reactnative'
 import EffectsHelper from './EffectsHelper';
 
 
