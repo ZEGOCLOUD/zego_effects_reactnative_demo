@@ -27,7 +27,6 @@ import { withNavigation } from '@react-navigation/compat';
 
 import ZegoExpressEngine, { ZegoPublishChannel, ZegoScenario } from 'zego-express-engine-reactnative';
 import KeyCenter from '../KeyCenter';
-import MinimizingHelper from './minimizing_helper';
 
 import ZegoEffects from '@zegocloud/zego-effects-reactnative'
 import EffectsHelper from './EffectsHelper';
@@ -53,16 +52,9 @@ class Home extends Component {
     title: 'Home',
   };
 
-  initMinimize() {
-    MinimizingHelper.instance().initMinimize();
-    MinimizingHelper.instance().registerWillMaximized('Home', () => {
-      this.navigateToPreview();
-    });
-  }
 
   onClickPreview() {
     console.log('onClickPreview');
-    MinimizingHelper.instance().notifyRestore();
     this.navigateToPreview();
   }
 
@@ -107,7 +99,6 @@ class Home extends Component {
 
       EffectsHelper.initEffects()
 
-      this.initMinimize();
     });
   }
 

@@ -5,6 +5,7 @@ import {
   StyleSheet,
   findNodeHandle,
   Image,
+  Text,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -12,10 +13,9 @@ import ZegoExpressEngine, {
   ZegoPublishChannel,
   ZegoTextureView,
 } from "zego-express-engine-reactnative";
-import MinimizingHelper from "./minimizing_helper";
+
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import EffectsConfig from "./EffectsConfig";
 import BeautyPanel from "./BeautyPanel";
 import EffectsHelper from "./EffectsHelper";
 
@@ -62,10 +62,6 @@ const Preview: React.FC = () => {
     navigation.goBack();
   };
 
-  const onClickMinimize = () => {
-    MinimizingHelper.instance().notifyMinimize();
-    navigation.goBack();
-  };
 
   const insets = useSafeAreaInsets();
 
@@ -75,21 +71,11 @@ const Preview: React.FC = () => {
 
       <View style={[styles.top_btn_container, { top: insets.top }]}>
         <TouchableOpacity style={styles.backBtnPos} onPress={onClickBack}>
-          <Image
+          <Text
             style={styles.backBtnImage}
-            source={require("./resources/icon_nav_back.png")} // 替换为你的图片路径
-          />
+          > &lt; </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.minimizeBtnPos}
-          onPress={onClickMinimize}
-        >
-          <Image
-            style={styles.minimizeBtnImage}
-            source={require("./resources/icon_minimize.png")} // 替换为你的图片路径
-          />
-        </TouchableOpacity>
       </View>
       <View style={styles.bottomBar}>
         <BeautyPanel
@@ -139,8 +125,10 @@ const styles = StyleSheet.create({
     justifyContent: "center", // 垂直居中
   },
   backBtnImage: {
-    width: 20,
-    height: 20,
+    width: 40,
+    height: 40,
+    fontSize: 40,
+    color: "white",
   },
   minimizeBtnPos: {
     marginLeft: 50,
