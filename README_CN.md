@@ -1,21 +1,20 @@
 # Zego Effects Demo for React Native
 
-* [中文](README_CN.md)
+* [English](README.md)
 * [API](https://zego-effects-reactnative.vercel.app/)
 
+## 使用说明
 
-## Usage
-### Download and Import Resources into the Project
+**下载并导入资源到项目**
 
-Download the latest version of the Effects SDK from the SDK download site (iOS download link: https://doc-zh.zego.im/article/15898, Android download link: https://doc-zh.zego.im/article/15899). After extracting it, import the `Resources` and `Models` folders into your project.
+从SDK下载网站下载最新版本的Effects SDK（iOS下载链接：[https://doc-zh.zego.im/article/15898](https://doc-zh.zego.im/article/15898)，Android下载链接：[https://doc-zh.zego.im/article/15899](https://doc-zh.zego.im/article/15899)）。解压后，将 `Resources` 和 `Models` 文件夹导入到你的项目中。
 
-**Note:** You only need to add the resources and models to your project; `@zegocloud/zego-effects-reactnative` will automatically download the SDK itself.
+注意：你只需要将资源和模型添加到你的项目中；`@zegocloud/zego-effects-reactnative`会自动下载SDK本身。
 
-* **iOS:** Add the `Resources` and `Models` folders to your Xcode project and choose the `Create folders` option in the `Group` settings. Assuming your project name is `example` and you place all resources in the `Assets` folder, your project directory structure should look like this after importing:
-
+* **iOS**：将 `Resources` 和 `Models` 文件夹添加到你的Xcode项目中，并在组设置中选择创建文件夹选项。假设你的项目名为 `example` ，并且你将所有资源放在 `Assets` 文件夹中，导入后你的项目目录结构应该如下所示：
 
 ```
-# ios
+ios
 ├── example
 │   ├── AppDelegate.h
 │   ├── AppDelegate.mm
@@ -35,11 +34,10 @@ Download the latest version of the Effects SDK from the SDK download site (iOS d
 │
 ```
 
-* **Android:** Add the `Resources` and `Models` folders to the `assets` directory in your Android project. Typically, the resources should be placed in the `android/app/src/main/assets` directory, so your project directory structure should look like this after importing:
-
+* **Android**：将 `Resources` 和 `Models` 文件夹添加到你的Android项目的 `assets` 目录中。通常，资源应该放置在 `android/app/src/main/assets` 目录中，所以导入后你的项目目录结构应该如下所示：
 
 ```
-# android/app/src/main
+android/app/src/main
 ├── AndroidManifest.xml
 ├── assets
 │   ├── Models
@@ -57,13 +55,16 @@ Download the latest version of the Effects SDK from the SDK download site (iOS d
 └── res
 ```
 
-**Install Dependencies and Run**
+**安装依赖和运行**
 
 ```bash
 yarn
 
-# Run on iOS
+# 运行ios
 yarn ios
 
-# Run on Android
+# 运行android
 yarn android
+
+```
+
