@@ -241,7 +241,7 @@ const config: BeautyItem[] = [
                     {
                         "type": BeautyType.Skin_Color_Fenbai,
                         "name": "粉白",
-                        "params": ZegoEffectsSkinColorType.Fenbei
+                        "params": ZegoEffectsSkinColorType.Fenbai
                     },
                     {
                         "type": BeautyType.Skin_Color_Meihei,

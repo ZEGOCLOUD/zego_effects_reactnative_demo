@@ -76,7 +76,7 @@ export default class EffectsHelper {
 
         // console.info("--- enable Skin");
         // this.effects.enableSkinColor(true)
-        // this.effects.setSkinColorParam({ intensity: 30,type: ZegoEffectsSkinColorType.Fenbei })
+        // this.effects.setSkinColorParam({ intensity: 30,type: ZegoEffectsSkinColorType.Fenbai })
 
         // Enable small face
         this.effects.enableFaceLifting(true)
