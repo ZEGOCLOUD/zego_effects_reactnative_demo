@@ -1,4 +1,4 @@
-import { ZegoEffectsBlusherType, ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType } from "@zegocloud/zego-effects-reactnative";
+import { ZegoEffectsBlusherType, ZegoEffectsSkinColorType,ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType } from "@zegocloud/zego-effects-reactnative";
 
 // 美颜配置项
 export interface BeautyItem {
@@ -193,7 +193,19 @@ export enum BeautyType {
     // 银河眼妆
     Total_MilkyEyes = 89,
     // 神颜
-    Total_Flawless = 90
+    Total_Flawless = 90,
+    //原肤/祛痘祛斑
+    Beauty_RemoveAce = 91,
+    //肤色
+    Skin_Color = 92,
+    Skin_Color_Fenbai = 93,
+    Skin_Color_Meihei = 94,
+    Skin_Color_Lengbai = 95,
+    Skin_Color_Nuanbai = 96,
+    Skin_Color_Xiaomai = 97,
+    //清晰
+    Beauty_Clarity = 98
+
 }
 
 
@@ -204,6 +216,58 @@ const config: BeautyItem[] = [
         "name": "基础美颜",
         "items": [
             {
+                "type": BeautyType.Beauty_Face,
+                "name": "磨皮",
+                "intensity": 95,
+
+            },
+            {
+                "type": BeautyType.Beauty_RemoveAce,
+                "name": "原肤",
+                "intensity": 95,
+
+            },
+            {
+                "type": BeautyType.Beauty_Clarity,
+                "name": "清晰",
+                "intensity": 20,
+
+            },
+            {
+                "type": BeautyType.Skin_Color,
+                "name": "肤色",
+                "intensity": 80,
+                "items": [
+                    {
+                        "type": BeautyType.Skin_Color_Fenbai,
+                        "name": "粉白",
+                        "params": ZegoEffectsSkinColorType.Fenbei
+                    },
+                    {
+                        "type": BeautyType.Skin_Color_Meihei,
+                        "name": "美黑",
+                        "params": ZegoEffectsSkinColorType.Meihei
+                    },
+                    {
+                        "type": BeautyType.Skin_Color_Lengbai,
+                        "name": "冷白",
+                        "params": ZegoEffectsSkinColorType.Lengbai
+                    },
+                    {
+                        "type": BeautyType.Skin_Color_Nuanbai,
+                        "name": "暖白",
+                        "params": ZegoEffectsSkinColorType.Nuanbai
+                    },
+                    {
+                        "type": BeautyType.Skin_Color_Xiaomai,
+                        "name": "小麦色",
+                        "params": ZegoEffectsSkinColorType.Xiaomai
+                    }
+                ]
+            },
+
+
+            {
                 "type": BeautyType.Face_Whitening,
                 "name": "美白",
                 "intensity": 100,
@@ -213,12 +277,6 @@ const config: BeautyItem[] = [
                 "type": BeautyType.Rosy,
                 "name": "红润",
                 "intensity": 100,
-            },
-            {
-                "type": BeautyType.Beauty_Face,
-                "name": "磨皮",
-                "intensity": 100,
-
             },
             {
                 "type": BeautyType.Sharpen,
@@ -622,12 +680,6 @@ const config: BeautyItem[] = [
         "type": BeautyType.Type_Group,
         "name": "虚拟背景",
         "items": [
-
-            {
-                "type": BeautyType.AI_Segment,
-                "name": "AI分割",
-
-            },
             {
                 "type": BeautyType.ChromaKey,
                 "name": "绿幕分割",
