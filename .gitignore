@@ -9,4 +9,7 @@ xcuserdata
 .vscode
 android/app/src/main/assets
 ios/Assets
+.history/
 KeyCenter.js
+android/app/release/
+ios/.xcode.env.local
