@@ -1,4 +1,4 @@
-import ZegoEffects, { ZegoEffectsBlusherType, ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType, ZegoEffectsScaleMode } from '@zegocloud/zego-effects-reactnative'
+import ZegoEffects, { ZegoEffectsSkinColorType,ZegoEffectsBlusherType, ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType, ZegoEffectsScaleMode } from '@zegocloud/zego-effects-reactnative'
 import KeyCenter from '../KeyCenter';
 import { BeautyItem, BeautyType } from './EffectsConfig';
 import RNFS from 'react-native-fs';
@@ -70,9 +70,17 @@ export default class EffectsHelper {
         this.effects.enableSmooth(true);
         this.effects.setSmoothParam({ intensity: 100 });
 
+
+        this.effects.enableAcneRemoving(true)
+        this.effects.setAcneRemovingParam({ intensity: 100 })
+
+        // console.info("--- enable Skin");
+        // this.effects.enableSkinColor(true)
+        // this.effects.setSkinColorParam({ intensity: 30,type: ZegoEffectsSkinColorType.Fenbai })
+
         // Enable small face
         this.effects.enableFaceLifting(true)
-        this.effects.setFaceLiftingParam({ intensity: 100 })
+        this.effects.setFaceLiftingParam({ intensity: 30 })
 
     }
 
@@ -112,6 +120,23 @@ export default class EffectsHelper {
                     } else {
                         this.effects?.enableRosy(true);
                         this.effects?.setRosyParam({ intensity: currentIntensity });
+                    }
+                    break;
+                case BeautyType.Beauty_RemoveAce:
+                    if (currentIntensity == 0) {
+                        this.effects?.enableAcneRemoving(false);
+                    } else {
+                        this.effects?.enableAcneRemoving(true);
+                        this.effects?.setAcneRemovingParam({ intensity: currentIntensity });
+                    }
+                    break;
+                    
+                case BeautyType.Beauty_Clarity:
+                    if (currentIntensity == 0) {
+                        this.effects?.enableClarity(false);
+                    } else {
+                        this.effects?.enableClarity(true);
+                        this.effects?.setClarityParam({ intensity: currentIntensity });
                     }
                     break;
                 case BeautyType.Beauty_Face:
@@ -304,12 +329,29 @@ export default class EffectsHelper {
             })
         } else if (groupItem.type == BeautyType.Background) {
             // 背景图片
-            const path = this.getResourcePath() + '/' + beautyItem.params as string
+             var path = this.getResourcePath() + '/' + beautyItem.params as string
+            if (Platform.OS == 'android') {
+                path = this.getResourcePath() + '/Resources/' + beautyItem.params as string
+            }
+
             console.log("setting background: " + path)
             this.effects?.setChromaKeyBackgroundPath(path, ZegoEffectsScaleMode.AspectFill);
             this.effects?.setPortraitSegmentationBackgroundPath(path, ZegoEffectsScaleMode.AspectFill)
 
-        } else if (groupItem.type == BeautyType.Beautiful_Makeup) {
+        }
+        else if (groupItem.type == BeautyType.Skin_Color) {
+            console.log("setting Skin_Color: ")
+            if (currentIntensity == 0) {
+                this.effects?.enableSkinColor(false);
+            } else {
+                this.effects?.enableSkinColor(true);
+                this.effects?.setSkinColorParam({
+                    intensity: currentIntensity,
+                    type: beautyItem.params as ZegoEffectsSkinColorType
+                });
+            }
+        } 
+        else if (groupItem.type == BeautyType.Beautiful_Makeup) {
             // ************************ 美妆相关 /
             // switch (beautyItem.type) {
             //     

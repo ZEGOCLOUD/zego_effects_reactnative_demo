@@ -12,6 +12,8 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import ZegoExpressEngine, {
   ZegoPublishChannel,
   ZegoTextureView,
+  ZegoVideoConfig,
+  ZegoVideoConfigPreset
 } from "zego-express-engine-reactnative";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -36,6 +38,13 @@ const Preview: React.FC = () => {
       { userID: userID, userName: "zego" },
       undefined
     );
+    let videoConfig =  new ZegoVideoConfig();
+    videoConfig.captureWidth = 720;
+    videoConfig.captureHeight = 1280;
+    videoConfig.encodeWidth = 720;
+    videoConfig.encodeHeight = 1280;
+    ZegoExpressEngine.instance().setVideoConfig(videoConfig,ZegoPublishChannel.Main);
+
     ZegoExpressEngine.instance().startPreview(
       {
         reactTag: findNodeHandle(previewRef.current),
@@ -52,14 +61,21 @@ const Preview: React.FC = () => {
 
     return () => {};
   }, []);
-
+  let isCooldown = false;
   const onClickBack = () => {
+    if (isCooldown) {
+      return;
+    }
+    isCooldown = true;
     ZegoExpressEngine.instance().stopPublishingStream(ZegoPublishChannel.Main);
     ZegoExpressEngine.instance().stopPreview(ZegoPublishChannel.Main);
     ZegoExpressEngine.instance().logoutRoom(roomID);
     console.log(`logoutRoom, room:${roomID}`);
 
     navigation.goBack();
+    setTimeout(() => {
+      isCooldown = false; // 恢复冷却状态
+    }, 2000);
   };
 
 
