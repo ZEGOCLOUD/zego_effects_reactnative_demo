@@ -9,7 +9,6 @@ const KeyCenter = {
     // AppSign is available through the [console](https://console.zego.im/dashboard) in the format "39011cbxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     appSign: '',
 
-    effectLicense: '',
 }
 
 export default KeyCenter

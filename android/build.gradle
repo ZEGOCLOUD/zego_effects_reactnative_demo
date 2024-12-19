@@ -2,7 +2,6 @@
 
 buildscript {
     ext {
-        buildToolsVersion = "33.0.1"
         minSdkVersion = 26
         compileSdkVersion = 33
         targetSdkVersion = 33
@@ -11,6 +10,7 @@ buildscript {
         ndkVersion = "25.2.9519653"
     }
     repositories {
+        maven { url 'https://storage.zego.im/maven' }
         google()
         mavenCentral()
     }

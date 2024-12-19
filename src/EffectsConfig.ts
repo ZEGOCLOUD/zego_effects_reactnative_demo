@@ -1,4 +1,4 @@
-import { ZegoEffectsBlusherType, ZegoEffectsSkinColorType,ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType } from "@zegocloud/zego-effects-reactnative";
+import { ZegoEffectsBlusherType, ZegoEffectsSkinColorType, ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType } from "@zegocloud/zego-effects-reactnative";
 
 // 美颜配置项
 export interface BeautyItem {
@@ -691,50 +691,15 @@ const config: BeautyItem[] = [
                 "intensity": 100,
                 "items": [
                     {
-                        "type": BeautyType.Background_Grassland,
-                        "name": "草原",
-                        "params": "Backgrounds.bundle/grassland.jpg"
-                    },
-                    {
                         "type": BeautyType.Background_Sunset,
                         "name": "日落",
                         "params": "Backgrounds.bundle/sunset.jpg"
-                    },
-                    {
-                        "type": BeautyType.Background_Mapleleaf,
-                        "name": "枫叶",
-                        "params": "Backgrounds.bundle/mapleleaf.jpg"
-                    },
-                    {
-                        "type": BeautyType.Background_Sky,
-                        "name": "天空",
-                        "params": "Backgrounds.bundle/sky.jpg"
-                    },
-                    {
-                        "type": BeautyType.Background_Bear,
-                        "name": "小熊",
-                        "params": "Backgrounds.bundle/bear.jpg"
                     },
                     {
                         "type": BeautyType.Background_WaterHouse,
                         "name": "水屋",
                         "params": "Backgrounds.bundle/bg.jpg"
                     },
-                    {
-                        "type": BeautyType.Background_Forest,
-                        "name": "深林",
-                        "params": "Backgrounds.bundle/trees.jpg"
-                    },
-                    {
-                        "type": BeautyType.Background_AnimalKingdom,
-                        "name": "动森",
-                        "params": "Backgrounds.bundle/animal.jpg"
-                    },
-                    {
-                        "type": BeautyType.Background_Dusk,
-                        "name": "黄昏",
-                        "params": "Backgrounds.bundle/nightfall.jpg"
-                    }
                 ]
             },
             {

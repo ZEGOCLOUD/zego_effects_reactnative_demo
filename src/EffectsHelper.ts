@@ -1,8 +1,12 @@
-import ZegoEffects, { ZegoEffectsSkinColorType,ZegoEffectsBlusherType, ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType, ZegoEffectsScaleMode } from '@zegocloud/zego-effects-reactnative'
+import ZegoEffects, { ZegoEffectsSkinColorType, ZegoEffectsBlusherType, ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType, ZegoEffectsScaleMode } from '@zegocloud/zego-effects-reactnative'
 import KeyCenter from '../KeyCenter';
 import { BeautyItem, BeautyType } from './EffectsConfig';
 import RNFS from 'react-native-fs';
 import { Platform } from 'react-native';
+
+// https://aieffects-api.zego.im?Action=DescribeEffectsLicense&AppId=${ZegoConfig.instance.appID}&AuthInfo=${AuthInfo}
+// docs: https://doc-zh.zego.im/article/11987
+const GET_LICENSE_CGI = "https://aieffects-api.zego.im?Action=DescribeEffectsLicense"
 
 /**
  * 将assets目录中的文件或目录复制到目标路径
@@ -50,13 +54,38 @@ export default class EffectsHelper {
         }
     }
 
+    static async getLicense(): Promise<string> {
+        // getLicense from ZEGO server
+        // docs: https://doc-zh.zego.im/article/11987
+        const authInfo = await ZegoEffects.getAuthInfo(KeyCenter.appSign)
+        try {
+            const response = await fetch(`${GET_LICENSE_CGI}&AppId=${KeyCenter.appID}&AuthInfo=${authInfo}`);
+            const data = await response.json();
+            console.log('EffectsInitPage Get license', data);
+            if(data.Code === 0){
+                return data.Data.License; 
+            }
+            return null;
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
+    }
+
+
     static async initEffects() {
         if (Platform.OS == 'android') {
             // 把资源都拷贝到SD卡
             this.copyResources()
         }
 
-        this.effects = new ZegoEffects(KeyCenter.effectLicense);
+        const license = await this.getLicense()
+        if (!license) {
+            console.error("Effects get license error");
+            return
+        }
+
+        this.effects = new ZegoEffects(license);
 
         // Listen for error events
         this.effects.on("error", (errorCode, desc) => {
@@ -130,7 +159,7 @@ export default class EffectsHelper {
                         this.effects?.setAcneRemovingParam({ intensity: currentIntensity });
                     }
                     break;
-                    
+
                 case BeautyType.Beauty_Clarity:
                     if (currentIntensity == 0) {
                         this.effects?.enableClarity(false);
@@ -329,7 +358,7 @@ export default class EffectsHelper {
             })
         } else if (groupItem.type == BeautyType.Background) {
             // 背景图片
-             var path = this.getResourcePath() + '/' + beautyItem.params as string
+            var path = this.getResourcePath() + '/' + beautyItem.params as string
             if (Platform.OS == 'android') {
                 path = this.getResourcePath() + '/Resources/' + beautyItem.params as string
             }
@@ -350,7 +379,7 @@ export default class EffectsHelper {
                     type: beautyItem.params as ZegoEffectsSkinColorType
                 });
             }
-        } 
+        }
         else if (groupItem.type == BeautyType.Beautiful_Makeup) {
             // ************************ 美妆相关 /
             // switch (beautyItem.type) {
