@@ -76,7 +76,8 @@ class Home extends Component {
           if (!data) {
             const permissions = [
               PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-              PermissionsAndroid.PERMISSIONS.CAMERA
+              PermissionsAndroid.PERMISSIONS.CAMERA,
+              PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
             ]
             //返回得是对象类型
             PermissionsAndroid.requestMultiple(permissions)

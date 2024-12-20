@@ -1,7 +1,7 @@
 import ZegoEffects, { ZegoEffectsSkinColorType, ZegoEffectsBlusherType, ZegoEffectsColoredcontactsType, ZegoEffectsEyelashesType, ZegoEffectsEyelinerType, ZegoEffectsEyeshadowType, ZegoEffectsFilterType, ZegoEffectsLipstickType, ZegoEffectsMakeupType, ZegoEffectsMosaicType, ZegoEffectsScaleMode } from '@zegocloud/zego-effects-reactnative'
 import KeyCenter from '../KeyCenter';
 import { BeautyItem, BeautyType } from './EffectsConfig';
-import RNFS from 'react-native-fs';
+import * as RNFS from 'react-native-fs';
 import { Platform } from 'react-native';
 
 // https://aieffects-api.zego.im?Action=DescribeEffectsLicense&AppId=${ZegoConfig.instance.appID}&AuthInfo=${AuthInfo}
@@ -16,12 +16,13 @@ const GET_LICENSE_CGI = "https://aieffects-api.zego.im?Action=DescribeEffectsLic
 async function copyAssetsRecursively(assetsRelativePath: string, destinationPath: string) {
     // 读取assets目录下的所有文件和子目录
     const files = await RNFS.readDirAssets(assetsRelativePath);
-    // await RNFS.mkdir(destinationPath);
-    console.log(`mkdir ${destinationPath}`)
+    const result = await RNFS.mkdir(destinationPath);
+    console.log(`[copyResources] mkdir ${destinationPath}: ${result}, cp files: ${files.length}`)
     for (const file of files) {
+        console.log(`[copyResources] handle file: ${file}`)
         const filePath = `${assetsRelativePath}/${file.name}`;
         const destFilePath = `${destinationPath}/${file.name}`;
-        console.log(`cp ${filePath} to ${destFilePath}`)
+        console.log(`[copyResources] exec cp ${filePath} to ${destFilePath}`)
         if (file.isDirectory()) {
             // 是一个目录，需要创建目录并递归复制
             await RNFS.mkdir(destFilePath);
@@ -40,7 +41,7 @@ export default class EffectsHelper {
     static async copyResources() {
         const src = "Backgrounds.bundle";
         const dest = RNFS.ExternalCachesDirectoryPath + "/" + src
-        console.log(`cp ${src} to ${dest}`)
+        console.log(`[copyResources] start cp ${src} to ${dest}`)
         copyAssetsRecursively(src, dest)
             .then(() => console.log('所有文件复制成功'))
             .catch((err) => console.error('文件复制失败', err));
@@ -54,14 +55,14 @@ export default class EffectsHelper {
         }
     }
 
-    static async getLicense(): Promise<string> {
+    static async getLicense(): Promise<string | null> {
         // getLicense from ZEGO server
         // docs: https://doc-zh.zego.im/article/11987
         const authInfo = await ZegoEffects.getAuthInfo(KeyCenter.appSign)
         try {
             const response = await fetch(`${GET_LICENSE_CGI}&AppId=${KeyCenter.appID}&AuthInfo=${authInfo}`);
             const data = await response.json();
-            console.log('EffectsInitPage Get license', data);
+            console.log('EffectsInitPage Get license, code:', data.Code,', message:', data.Message);
             if(data.Code === 0){
                 return data.Data.License; 
             }
@@ -359,9 +360,6 @@ export default class EffectsHelper {
         } else if (groupItem.type == BeautyType.Background) {
             // 背景图片
             var path = this.getResourcePath() + '/' + beautyItem.params as string
-            if (Platform.OS == 'android') {
-                path = this.getResourcePath() + '/Resources/' + beautyItem.params as string
-            }
 
             console.log("setting background: " + path)
             this.effects?.setChromaKeyBackgroundPath(path, ZegoEffectsScaleMode.AspectFill);

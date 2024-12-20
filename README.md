@@ -1,69 +1,48 @@
 # Zego Effects Demo for React Native
 
 * [中文](README_CN.md)
-* [API](https://zego-effects-reactnative.vercel.app/)
+* [API](https://doc-zh.zego.im/article/21358)
 
+## Usage Instructions
 
-## Usage
-### Download and Import Resources into the Project
+**I. Download Resources and Import to Your Project**
 
-Download the latest version of the Effects SDK from the SDK download site (iOS download link: https://doc-zh.zego.im/article/15898, Android download link: https://doc-zh.zego.im/article/15899). After extracting it, import the `Resources` and `Models` folders into your project.
+Download the latest version of the Effects SDK from the SDK download website (iOS download link: [https://doc-zh.zego.im/article/15898](https://doc-zh.zego.im/article/15898), Android download link: [https://doc-zh.zego.im/article/15899](https://doc-zh.zego.im/article/15899)). After extracting, import the `Resources` and `Models` folders into your project.
 
-**Note:** You only need to add the resources and models to your project; `@zegocloud/zego-effects-reactnative` will automatically download the SDK itself.
+**Note:**: You only need to add the resources and models to your project; `@zegocloud/zego-effects-reactnative` will automatically download the SDK itself.
 
-* **iOS:** Add the `Resources` and `Models` folders to your Xcode project and choose the `Create folders` option in the `Group` settings. Assuming your project name is `example` and you place all resources in the `Assets` folder, your project directory structure should look like this after importing:
+* **iOS**: Add the `Resources` and `Models` folders to your Xcode project and select the option to create a folder reference in the group settings. Assuming your project is named `example` and you have placed all resources in the `Assets` folder, your project directory structure should look like this after import:
 
+  ![](media/image2.png)
 
-```
-# ios
-├── example
-│   ├── AppDelegate.h
-│   ├── AppDelegate.mm
-│   ├── Images.xcassets
-├── Assets
-│   ├── Models
-│   │   ├── FaceDetectionModel.model
-│   │   └── SegmentationModel.model
-│   └── Resources
-│       ├── ColorfulStyleResources
-│       ├── CommonResources.bundle
-│       ├── FaceWhiteningResources.bundle
-│       ├── MakeupResources
-│       ├── PendantResources.bundle
-│       ├── RosyResources.bundle
-│       └── TeethWhiteningResources.bundle
-│
-```
+* **Android**: Add the `Resources` and `Models` folders to your Android project's `assets` directory. Typically, resources should be placed in the `android/app/src/main/assets` directory, so your project directory structure should look like this after import:
 
-* **Android:** Add the `Resources` and `Models` folders to the `assets` directory in your Android project. Typically, the resources should be placed in the `android/app/src/main/assets` directory, so your project directory structure should look like this after importing:
+  ![](media/image3.png)
 
+**II. Configure AppID and AppSign**
 
-```
-# android/app/src/main
-├── AndroidManifest.xml
-├── assets
-│   ├── Models
-│   │   ├── FaceDetectionModel.model
-│   │   └── SegmentationModel.model
-│   └── Resources
-│       ├── ColorfulStyleResources
-│       ├── CommonResources.bundle
-│       ├── FaceWhiteningResources.bundle
-│       ├── MakeupResources
-│       ├── PendantResources.bundle
-│       ├── RosyResources.bundle
-│       └── TeethWhiteningResources.bundle
-├── java
-└── res
-```
+Rename `KeyCenter.js.example` to `KeyCenter.js` and modify the `appID` and `appSign` to the values obtained from your Zego console application.
 
-**Install Dependencies and Run**
+![](media/image4.png)
+
+Also, change the `applicationID` of the Android project and the `bundlerID` of the iOS project to the corresponding values filled in when applying for `Effects` (Zego's technical support staff will assist with the application and configuration).
+
+* `android/app/build.gradle`
+
+  ![](media/image5.png)
+
+* `ios/example.xcodeproj`
+
+  ![](media/image6.png)
+
+**III. Install Dependencies and Run**
 
 ```bash
 yarn
 
-# Run on iOS
+# Run iOS
 yarn ios
 
-# Run on Android
+# Run Android
 yarn android
+```
