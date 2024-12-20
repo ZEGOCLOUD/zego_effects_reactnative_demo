@@ -38,9 +38,14 @@ Also, change the `applicationID` of the Android project and the `bundlerID` of t
 **III. Install Dependencies and Run**
 
 ```bash
+# Install dependencies
 yarn
 
 # Run iOS
+cd ios
+export NODE_BINARY=$(command -v node) > .xcode.env.local
+pod repo update
+pod install 
 yarn ios
 
 # Run Android
