@@ -15,7 +15,7 @@
         "@react-navigation/compat": "^5.3.20",
         "@react-navigation/native": "^6.1.18",
         "@react-navigation/stack": "^6.4.1",
-        "@zegocloud/zego-effects-reactnative": "^2.0.3",
+        "@zegocloud/zego-effects-reactnative": "^2.0.4",
         "react": "18.3.1",
         "react-native": "0.74.4",
         "react-native-fs": "^2.20.0",

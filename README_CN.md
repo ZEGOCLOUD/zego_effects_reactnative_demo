@@ -44,7 +44,7 @@ yarn
 
 # 运行ios
 cd ios
-export NODE_BINARY=$(command -v node) > .xcode.env.local
+echo export NODE_BINARY=$(command -v node) > .xcode.env.local
 pod repo update
 pod install 
 yarn ios
