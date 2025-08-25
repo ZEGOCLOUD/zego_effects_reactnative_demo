@@ -13,3 +13,4 @@ ios/Assets
 KeyCenter.js
 android/app/release/
 ios/.xcode.env.local
+ios/Podfile.lock

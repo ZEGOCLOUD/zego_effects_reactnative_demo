@@ -43,8 +43,8 @@ export default class EffectsHelper {
         const dest = RNFS.ExternalCachesDirectoryPath + "/" + src
         console.log(`[copyResources] start cp ${src} to ${dest}`)
         copyAssetsRecursively(src, dest)
-            .then(() => console.log('所有文件复制成功'))
-            .catch((err) => console.error('文件复制失败', err));
+            .then(() => console.log('All files copied successfully'))
+            .catch((err) => console.error('File copy failed', err));
     }
 
     static getResourcePath() {
@@ -55,68 +55,79 @@ export default class EffectsHelper {
         }
     }
 
-    static async getLicense(): Promise<string | null> {
-        // getLicense from ZEGO server
-        // docs: https://doc-zh.zego.im/article/11987
-        const authInfo = await ZegoEffects.getAuthInfo(KeyCenter.appSign)
-        try {
-            const response = await fetch(`${GET_LICENSE_CGI}&AppId=${KeyCenter.appID}&AuthInfo=${authInfo}`);
-            const data = await response.json();
-            console.log('EffectsInitPage Get license, code:', data.Code,', message:', data.Message);
-            if(data.Code === 0){
-                return data.Data.License; 
-            }
-            return null;
-        } catch (error) {
-            console.error('Error:', error);
-            throw error;
-        }
-    }
-
-
     static async initEffects() {
         if (Platform.OS == 'android') {
             // 把资源都拷贝到SD卡
             this.copyResources()
         }
 
-        const license = await this.getLicense()
-        if (!license) {
-            console.error("Effects get license error");
-            return
+        try {
+            // 安全性校验：验证 appID 和 appSign 是否存在
+            if (!KeyCenter.appID || KeyCenter.appID === 0) {
+                console.error("[ZEGO Effects] Initialization failed: appID is invalid or not configured");
+                return;
+            }
+            
+            if (!KeyCenter.appSign || KeyCenter.appSign.length === 0) {
+                console.error("[ZEGO Effects] Initialization failed: appSign is invalid or not configured");
+                return;
+            }
+            
+            console.log(`[ZEGO Effects] Starting to initialize ZegoEffects, appID: ${KeyCenter.appID}`);
+            
+            // 使用KeyCenter中的appID和appSign创建ZegoEffects实例
+            this.effects = new ZegoEffects(KeyCenter.appID, KeyCenter.appSign);
+            if(this.effects == null) {
+                console.error("[ZEGO Effects] Initialization failed: ZegoEffects instance is null");
+                return;
+            }
+            console.log("[ZEGO Effects] ZegoEffects instance created successfully");
+
+            // Listen for error events
+            this.effects.on("error", (errorCode, desc) => {
+                console.error(`[ZEGO Effects] Error: code=${errorCode}, desc=${desc}`);
+            });
+
+            // Enable Effects image handler for Express
+            await this.effects.enableImageProcessing(true)
+            console.log("[ZEGO Effects] Image processing feature enabled");
+
+            // Enable and configure the smoothing effect for better beautification
+            this.effects.enableSmooth(true);
+            this.effects.setSmoothParam({ intensity: 100 });
+            console.log("[ZEGO Effects] Smooth effect enabled with intensity 100");
+
+            this.effects.enableAcneRemoving(true)
+            this.effects.setAcneRemovingParam({ intensity: 100 })
+            console.log("[ZEGO Effects] Acne removal effect enabled with intensity 100");
+
+            // console.info("--- enable Skin");
+            // this.effects.enableSkinColor(true)
+            // this.effects.setSkinColorParam({ intensity: 30,type: ZegoEffectsSkinColorType.Fenbai })
+
+            // Enable small face
+            this.effects.enableFaceLifting(true)
+            this.effects.setFaceLiftingParam({ intensity: 30 })
+            console.log("[ZEGO Effects] Face lifting effect enabled with intensity 30");
+            
+            console.log("[ZEGO Effects] Initialization completed");
+        } catch (error) {
+            console.error(`[ZEGO Effects] Error occurred during initialization: ${error}`);
         }
-
-        this.effects = new ZegoEffects(license);
-
-        // Listen for error events
-        this.effects.on("error", (errorCode, desc) => {
-            console.error("Effects error: " + errorCode + ", desc: " + desc);
-        });
-
-        // Enable Effects image handler for Express
-        await this.effects.enableImageProcessing(true)
-
-        // Enable and configure the smoothing effect for better beautification
-        this.effects.enableSmooth(true);
-        this.effects.setSmoothParam({ intensity: 100 });
-
-
-        this.effects.enableAcneRemoving(true)
-        this.effects.setAcneRemovingParam({ intensity: 100 })
-
-        // console.info("--- enable Skin");
-        // this.effects.enableSkinColor(true)
-        // this.effects.setSkinColorParam({ intensity: 30,type: ZegoEffectsSkinColorType.Fenbai })
-
-        // Enable small face
-        this.effects.enableFaceLifting(true)
-        this.effects.setFaceLiftingParam({ intensity: 30 })
-
     }
 
     static async destroyEffects() {
-        if (this.effects) {
-            await this.effects.destroy()
+        try {
+            if (this.effects) {
+                console.log("[ZEGO Effects] Starting to destroy ZegoEffects instance");
+                await this.effects.destroy();
+                console.log("[ZEGO Effects] ZegoEffects instance destroyed successfully");
+                this.effects = null;
+            } else {
+                console.log("[ZEGO Effects] No ZegoEffects instance to destroy");
+            }
+        } catch (error) {
+            console.error(`[ZEGO Effects] Error occurred during destruction: ${error}`);
         }
     }
 

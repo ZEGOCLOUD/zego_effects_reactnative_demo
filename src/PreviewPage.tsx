@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   TouchableOpacity,
@@ -21,61 +21,124 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import BeautyPanel from "./BeautyPanel";
 import EffectsHelper from "./EffectsHelper";
 
+interface RouteParams {
+  userID: string;
+}
+
 const Preview: React.FC = () => {
   const navigation = useNavigation();
+  const [isPreviewReady, setIsPreviewReady] = useState(false);
 
   const { params } = useRoute();
-  const { userID } = params;
+  const { userID } = params as RouteParams;
 
-  const previewRef = useRef();
+  // 使用正确的类型定义
+  const previewRef = useRef<ZegoTextureView>(null);
 
-  const roomID = "9999";
+  const roomID = "999";
 
   useEffect(() => {
-    console.log(`loginRoom, room:${roomID}, userID:${userID}`);
-    ZegoExpressEngine.instance().loginRoom(
-      roomID,
-      { userID: userID, userName: "zego" },
-      undefined
-    );
-    let videoConfig =  new ZegoVideoConfig();
-    videoConfig.captureWidth = 720;
-    videoConfig.captureHeight = 1280;
-    videoConfig.encodeWidth = 720;
-    videoConfig.encodeHeight = 1280;
-    ZegoExpressEngine.instance().setVideoConfig(videoConfig,ZegoPublishChannel.Main);
+    const setupStream = async () => {
+      try {
+        console.log(`[ZEGO Express] Logging into room: ${roomID}, userID: ${userID}`);
+        
+        // Login to room
+        await ZegoExpressEngine.instance().loginRoom(
+          roomID,
+          { userID: userID, userName: "zego" },
+          undefined
+        );
+        
+        // Configure video settings
+        let videoConfig = new ZegoVideoConfig();
+        videoConfig.captureWidth = 720;
+        videoConfig.captureHeight = 1280;
+        videoConfig.encodeWidth = 720;
+        videoConfig.encodeHeight = 1280;
+        videoConfig.fps = 24; //default 15
+        await ZegoExpressEngine.instance().setVideoConfig(videoConfig, ZegoPublishChannel.Main);
 
-    ZegoExpressEngine.instance().startPreview(
-      {
-        reactTag: findNodeHandle(previewRef.current),
-        viewMode: 0,
-        backgroundColor: 0,
-      },
-      ZegoPublishChannel.Main
-    );
-    ZegoExpressEngine.instance().startPublishingStream(
-      userID,
-      ZegoPublishChannel.Main,
-      undefined
-    );
+        // Wait for the preview ref to be ready
+        if (!isPreviewReady) {
+          console.log("[ZEGO Express] Waiting for preview view to be ready...");
+          // If preview not ready yet, try again later
+          return;
+        }
 
-    return () => {};
-  }, []);
+        const reactTag = findNodeHandle(previewRef.current);
+        if (!reactTag) {
+          console.error("[ZEGO Express] Failed to get valid reactTag for preview view");
+          return;
+        }
+        
+        // Start preview
+        console.log("[ZEGO Express] Starting preview...");
+        await ZegoExpressEngine.instance().startPreview(
+          {
+            reactTag: reactTag,
+            viewMode: 0,
+            backgroundColor: 0,
+          },
+          ZegoPublishChannel.Main
+        );
+        console.log("[ZEGO Express] Preview started successfully");
+        
+        // Start publishing stream asynchronously
+        console.log(`[ZEGO Express] Starting to publish stream for user: ${userID}`);
+        await ZegoExpressEngine.instance().startPublishingStream(
+          userID,
+          ZegoPublishChannel.Main,
+          undefined
+        );
+        console.log(`[ZEGO Express] Stream publishing started successfully`);
+      } catch (error) {
+        console.error(`[ZEGO Express] Error setting up stream: ${error}`);
+      }
+    };
+
+    // If the view is ready, set up the stream
+    if (isPreviewReady) {
+      setupStream();
+    }
+
+    return () => {
+      // Cleanup function remains unchanged
+    };
+  }, [isPreviewReady]); // Add isPreviewReady as a dependency
+
+  // Effect to handle when the preview ref is ready
+  useEffect(() => {
+    // Check if ref exists and set the state
+    if (previewRef.current) {
+      setIsPreviewReady(true);
+    }
+  }, [previewRef.current]);
+  
   let isCooldown = false;
-  const onClickBack = () => {
+  const onClickBack = async () => {
     if (isCooldown) {
       return;
     }
     isCooldown = true;
-    ZegoExpressEngine.instance().stopPublishingStream(ZegoPublishChannel.Main);
-    ZegoExpressEngine.instance().stopPreview(ZegoPublishChannel.Main);
-    ZegoExpressEngine.instance().logoutRoom(roomID);
-    console.log(`logoutRoom, room:${roomID}`);
-
-    navigation.goBack();
-    setTimeout(() => {
-      isCooldown = false; // 恢复冷却状态
-    }, 2000);
+    
+    try {
+      console.log(`[ZEGO Express] Stopping publishing stream`);
+      await ZegoExpressEngine.instance().stopPublishingStream(ZegoPublishChannel.Main);
+      
+      console.log(`[ZEGO Express] Stopping preview`);
+      await ZegoExpressEngine.instance().stopPreview(ZegoPublishChannel.Main);
+      
+      console.log(`[ZEGO Express] Logging out of room: ${roomID}`);
+      await ZegoExpressEngine.instance().logoutRoom(roomID);
+      
+      navigation.goBack();
+    } catch (error) {
+      console.error(`[ZEGO Express] Error during cleanup: ${error}`);
+    } finally {
+      setTimeout(() => {
+        isCooldown = false; // 恢复冷却状态
+      }, 2000);
+    }
   };
 
 
@@ -83,7 +146,11 @@ const Preview: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <ZegoTextureView ref={previewRef} style={styles.fullscreenView} />
+      <ZegoTextureView 
+        ref={previewRef} 
+        style={styles.fullscreenView} 
+        onLayout={() => setIsPreviewReady(true)}
+      />
 
       <View style={[styles.top_btn_container, { top: insets.top }]}>
         <TouchableOpacity style={styles.backBtnPos} onPress={onClickBack}>
